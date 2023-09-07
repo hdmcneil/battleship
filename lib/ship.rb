@@ -15,4 +15,8 @@ attr_reader :name,
     @length == 0
   end 
 
+  def hit
+    @length -= 1
+  end
+
 end
