@@ -42,11 +42,10 @@ RSpec.describe Cell do
   end
 
   it 'renders a missed shot' do 
-    @cell.fire_upon
-    cell_2.place_ship(@cruiser)
+    expect(@cell.render).to eq(".")
 
+    @cell.fire_upon
     expect(@cell.render).to eq("M")  
-    expect(@cell_2.render).to  eq(".")
   end
 
   it 'renders a cell with a ship that has not been fired upon' do
@@ -56,14 +55,14 @@ RSpec.describe Cell do
   end
 
   it 'renders a hit when ship is fired upon' do
-    @cell_2.place_ship.cruiser
+    @cell_2.place_ship(@cruiser)
     @cell_2.fire_upon
 
     expect(@cell_2.render).to eq("H")
   end
 
   it 'renders a sunken ship when a ship is sunk' do
-    @cell_2.place_ship.cruiser
+    @cell_2.place_ship(@cruiser)
     @cell_2.fire_upon
     
     expect(@cruiser.sunk?).to eq false
