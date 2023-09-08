@@ -5,6 +5,7 @@ attr_reader :coordinate,
   def initialize(coordinate)
     @coordinate = coordinate
     @ship = nil
+    @fired = false
   
 
   end
@@ -19,7 +20,13 @@ attr_reader :coordinate,
   end
   
   def fired_upon
-    @ship.hit
+    if @ship
+      @ship.hit 
+      @fired = true
+    end
   end
 
+  def fired_upon?
+    @fired
+  end
 end
