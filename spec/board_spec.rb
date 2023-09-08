@@ -43,5 +43,8 @@ RSpec.describe Board do
     expect(@board.valid_placement?(cruiser, ["A1", "A2"])).to be false
     expect(@board.valid_placement?(submarine, ["A2", "A3", "A4"])).to be false
   end
+  it "will have consecutive coordinates" do
+    
+  end
 
 end
