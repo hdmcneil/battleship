@@ -32,5 +32,11 @@ attr_reader :cells
     else false
     end
   end
-
+  def valid_placement?(ship, coordinates)
+    
+    if coordinates.length == ship.length
+      true
+    else false
+    end
+  end
 end
