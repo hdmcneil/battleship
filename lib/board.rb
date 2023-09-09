@@ -33,10 +33,19 @@ attr_reader :cells
     end
   end
   def valid_placement?(ship, coordinates)
-    
-    if coordinates.length == ship.length
-      true
-    else false
+   return false unless coordinates.length == ship.length
+
+    coordinates.each do |coordinate|
+      return false unless @cells.key?(coordinate)
+
+      row, col = coordinate[0], coordinate[1..-1].to_i
+
+      horizontal = coordinates.include?("#{row}#{col - 1}") || coordinates.include?("#{row}#{col + 1}")
+      vertical = coordinates.include?("#{(row.ord - 1).chr}#{col}") || coordinates.include?("#{(row.ord + 1).chr}#{col}")
+
+    return false unless horizontal || vertical
     end
+
+    true
   end
 end
