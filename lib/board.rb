@@ -33,8 +33,14 @@ attr_reader :cells
     end
   end
   def valid_placement?(ship, coordinates)
-   return false unless coordinates.length == ship.length
+    # require 'pry'; binding.pry
 
+   return false unless coordinates.length == ship.length
+    coordinates.each do |coordinate|
+      return false unless valid_coordinate?(coordinate) 
+      cell = @cells[coordinate]
+      return false unless cell.empty?
+    end
     coordinates.each do |coordinate|
       return false unless @cells.key?(coordinate)
 
@@ -42,10 +48,15 @@ attr_reader :cells
 
       horizontal = coordinates.include?("#{row}#{col - 1}") || coordinates.include?("#{row}#{col + 1}")
       vertical = coordinates.include?("#{(row.ord - 1).chr}#{col}") || coordinates.include?("#{(row.ord + 1).chr}#{col}")
+      return false unless horizontal || vertical
 
-    return false unless horizontal || vertical
+      diagonal_ascending = coordinates.include?("#{(row.ord - 1).chr}#{col - 1}") || coordinates.include?("#{(row.ord + 1).chr}#{col + 1}")
+      diagonal_descending = coordinates.include?("#{(row.ord - 1).chr}#{col + 1}") || coordinates.include?("#{(row.ord + 1).chr}#{col - 1}")
+
+      return false if diagonal_ascending || diagonal_descending   
+
     end
-
-    true
+      true
+     
   end
 end
