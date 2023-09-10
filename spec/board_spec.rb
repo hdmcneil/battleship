@@ -46,8 +46,10 @@ RSpec.describe Board do
   it "will have consecutive coordinates" do
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Submarine", 2)
+    
     expect(@board.valid_placement?(cruiser, ["A1", "A2", "A4"])).to be false
     expect(@board.valid_placement?(submarine, ["A1", "C1"])).to be false
+    # binding.pry
     expect(@board.valid_placement?(cruiser, ["A3", "A2", "A1"])).to be false
     expect(@board.valid_placement?(submarine, ["C1", "B1"])).to be false
 
@@ -76,10 +78,9 @@ RSpec.describe Board do
     @board.place(cruiser, ["A1", "A2", "A3"])
     
     expect(cell_1).to be_an_instance_of(Cell)
-    # binding.pry
+    
     expect(cell_1.ship).to eq(cruiser)
   
   end
-
 
 end
