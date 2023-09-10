@@ -33,8 +33,6 @@ attr_reader :cells
     end
   end
   def valid_placement?(ship, coordinates)
-    # require 'pry'; binding.pry
-
    return false unless coordinates.length == ship.length
     coordinates.each do |coordinate|
       return false unless valid_coordinate?(coordinate) 
@@ -57,6 +55,14 @@ attr_reader :cells
 
     end
       true
-     
+  end
+  def place(ship, coordinates)
+    return false unless valid_placement?(ship, coordinates)
+    coordinates.each do |coordinate|
+      cell = @cells[coordinate]
+      cell.place_ship(ship)
+       return coordinates
+    end 
+
   end
 end
