@@ -2,11 +2,10 @@ class Board
 attr_reader :cells
 
   def initialize
-    @cells = {}
-
+    @cells = generate_cells
   end
 
-  def cells
+  def generate_cells
     @cells = {
      "A1" => Cell.new("A1"),
      "A2" => Cell.new("A2"),
@@ -26,37 +25,59 @@ attr_reader :cells
      "D4" => Cell.new("D4")
     }
   end
-  def valid_coordinate?(coordinate)
-    if @cells.key?(coordinate) 
-      true 
-    else false
-    end
-  end
-  def valid_placement?(ship, coordinates)
-    # require 'pry'; binding.pry
 
-   return false unless coordinates.length == ship.length
-    coordinates.each do |coordinate|
-      return false unless valid_coordinate?(coordinate) 
+  
+
+  def valid_coordinate?(coordinate)
+    @cells.key?(coordinate) 
+  end
+
+  def valid_placement?(ship, coordinates)
+    return false unless coordinates.length == ship.length
+
+    coordinates.each_with_index do |coordinate, index|
+      return false unless valid_coordinate?(coordinate)
       cell = @cells[coordinate]
       return false unless cell.empty?
-    end
-    coordinates.each do |coordinate|
-      return false unless @cells.key?(coordinate)
-
-      row, col = coordinate[0], coordinate[1..-1].to_i
+    # binding.pry
+        next_coordinate = coordinates[index + 1]
+        if next_coordinate
+          row, col = coordinate[0], coordinate[1..-1].to_i
+          next_row, next_col = next_coordinate[0], next_coordinate[1..-1].to_i
 
       horizontal = coordinates.include?("#{row}#{col - 1}") || coordinates.include?("#{row}#{col + 1}")
+
       vertical = coordinates.include?("#{(row.ord - 1).chr}#{col}") || coordinates.include?("#{(row.ord + 1).chr}#{col}")
-      return false unless horizontal || vertical
+
+      return false unless horizontal || vertical || next_coordinate < coordinate
+     
+      if row == next_row
+        return false unless next_col == col + 1
+      elsif col == next_col
+        return false unless next_row.ord == row.ord + 1
+      end
 
       diagonal_ascending = coordinates.include?("#{(row.ord - 1).chr}#{col - 1}") || coordinates.include?("#{(row.ord + 1).chr}#{col + 1}")
+
       diagonal_descending = coordinates.include?("#{(row.ord - 1).chr}#{col + 1}") || coordinates.include?("#{(row.ord + 1).chr}#{col - 1}")
 
-      return false if diagonal_ascending || diagonal_descending   
-
+      return false if diagonal_ascending || diagonal_descending
+      end
     end
-      true
-     
+    return true
   end
+
+  def place(ship, coordinates)
+    coordinates.each do |coordinate|
+      cell = @cells[coordinate]
+      cell.place_ship(ship)
+    end
+  end
+  
 end
+
+
+
+
+
+
