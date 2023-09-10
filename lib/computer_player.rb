@@ -20,24 +20,26 @@ class ComputerPlayer
       coordinates = generate_random_coordinates(cruiser.length)
       valid_placement = board.valid_placement?(cruiser, coordinates)
     end
-
+    
     board.place(cruiser, coordinates)
     
   end
 
   def place_submarine(board)
-    submarine = Ship.new("Submarine", 3)
+    submarine = Ship.new("Submarine", 2)
     valid_placement = false
 
     until valid_placement
       coordinates = generate_random_coordinates(submarine.length)
       valid_placement = board.valid_placement?(submarine,coordinates)
     end
+    # binding.pry
 
     board.place(submarine, coordinates)
   end
 
   def generate_random_coordinates(ship_length)
+    
     rows = ["A", "B", "C", "D"]
     columns = ["1", "2", "3", "4"]
 
@@ -60,5 +62,6 @@ class ComputerPlayer
       end
     end
     coordinates
+    
   end
 end

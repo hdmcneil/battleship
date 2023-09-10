@@ -10,7 +10,7 @@ RSpec.describe Board do
     @computer = ComputerPlayer.new
     @board = Board.new
     @cruiser = Ship.new("Cruiser", 3)
-    @submarine = Ship.new("Submarine", 3)
+    @submarine = Ship.new("Submarine", 2)
   end
 
   it 'is an instance of ComputerPlayer class' do
@@ -20,13 +20,14 @@ RSpec.describe Board do
   it 'can place a cruiser' do
     @computer.place_cruiser(@board)
     expect(@cruiser.length).to eq(3)
-    binding.pry
+    expect(@board.cells.values.any?(&:ship)).to be(true)
+    # binding.pry
     
   end
 
   it 'can place a submarine' do
     @computer.place_submarine(@board)
     expect(@submarine.length).to eq(2)
-    binding.pry
+    expect(@board.cells.values.any?(&:ship)).to be(true)
   end
 end
