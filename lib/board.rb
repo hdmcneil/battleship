@@ -70,10 +70,39 @@ attr_reader :cells
   def place(ship, coordinates)
     coordinates.each do |coordinate|
       cell = @cells[coordinate]
+      # require 'pry'; binding.pry
       cell.place_ship(ship)
     end
   end
-  
+  def render(reveal = false)
+      header = "  1 2 3 4 \n"
+      rows = ["A", "B", "C", "D"]
+      board  = header
+
+      rows.each do |row|
+        board <<  row + " "
+        (1..4).each do |col|
+          cell = @cells[row + col.to_s]
+          if cell.fired_upon?
+            if cell.empty?
+              board << "M "
+            elsif cell.ship.sunk?
+              board << "X "
+            else
+              board << "H "
+            end
+          else
+            if reveal && !cell.empty?
+              board << "S "
+            else 
+              board << ". "
+            end
+          end
+        end
+        board << "\n"
+      end
+      board
+    end
 end
 
 

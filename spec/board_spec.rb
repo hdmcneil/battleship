@@ -101,4 +101,94 @@ RSpec.describe Board do
     expect(@board.valid_placement?(submarine, ["A1", "B1"])).to be(false)
   end
 
+  
+    it "renders an empty board without revealing ships" do
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+      expected_output = <<~BOARD
+          1 2 3 4 
+        A . . . . 
+        B . . . . 
+        C . . . . 
+        D . . . . 
+
+      BOARD
+
+      expect(@board.render).to eq(expected_output.chomp)
+    end
+
+    it "renders the board with revealed ships" do
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+      @board.place(cruiser, ["A1", "A2", "A3"])
+      expected_output = <<~BOARD
+          1 2 3 4 
+        A S S S . 
+        B . . . . 
+        C . . . . 
+        D . . . . 
+
+      BOARD
+
+      expect(@board.render(true)).to eq(expected_output.chomp)
+    end
+
+    it "renders the board with hits" do
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+      @board.place(cruiser, ["A1", "A2", "A3"])
+      @board.cells["A1"].fire_upon
+
+      expected_output = <<~BOARD
+          1 2 3 4 
+        A H . . . 
+        B . . . . 
+        C . . . . 
+        D . . . . 
+
+      BOARD
+
+      expect(@board.render).to eq(expected_output.chomp)
+    end
+
+    it "renders the board with misses" do
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+      @board.place(cruiser, ["A1", "A2", "A3"])
+      @board.cells["B4"].fire_upon
+
+      expected_output = <<~BOARD
+          1 2 3 4 
+        A . . . . 
+        B . . . M 
+        C . . . . 
+        D . . . . 
+
+      BOARD
+
+      expect(@board.render).to eq(expected_output.chomp)
+    end
+
+    it "renders the board with a sunk ship" do
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+      @board.place(cruiser, ["A1", "A2", "A3"])
+      #  require 'pry'; binding.pry
+      @board.cells["A1"].fire_upon
+      @board.cells["A2"].fire_upon
+      @board.cells["A3"].fire_upon
+
+      expected_output = <<~BOARD
+          1 2 3 4 
+        A X X X . 
+        B . . . . 
+        C . . . . 
+        D . . . . 
+
+      BOARD
+
+      expect(@board.render).to eq(expected_output.chomp)
+    end
+
+
 end
