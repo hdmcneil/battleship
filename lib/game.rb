@@ -1,24 +1,33 @@
 require 'pry'
 require 'optparse'
 class Game
-  attr_reader :player_board, :computer_board, :player_ships, :computer_ships
+  attr_reader :quit, :game_over, :computer_player, :player
    def initialize
-    @player_board = Board.new
-    @computer_board = Board.new
+    @computer_player = ComputerPlayer.new
+    @player = Player.new
     @quit = false
     @game_over = false
    end
+   def play_again?
+    puts "Do you want to play again? (yes/no)"
+    response = gets.chomp.downcase
+    response == "yes"
+   end
+   def start_new_game
+    @computer_player.place_ships
+    @player.place_ships
+   end
+   def reset_game 
+      @player_board
+      @computer_board
+      @player 
+      @computer 
+      @game_over = false
+   end
    def start_game
     loop do
-      @board = Board.new
-      @player = Player.new
-      @computer = ComputerPlayer.new
-      @game_over = false
-      if game_over?
-        display_winner
-        break unless play_again?
-      end
-    end
+      reset_game 
+      
     puts "Welcome to BATTLESHIP!"
     puts "Enter 'p' to play. Enter 'q' to quit."
     while !@quit
@@ -33,21 +42,24 @@ class Game
       else
         puts "Invalid input. Please enter 'p' to play or 'q' to quit"
       end
+        if game_over?
+          display_winner
+          break unless play_again?
+        end
+      end
     end
   end
-  def play_again?
-    puts "Do you want to play again? (yes/no)"
-    response = gets.chomp.downcase
-    response == "yes"
-  end
-   def start_new_game
-    computer.place_ships(ship, coordinates)
-    player.place_ships(ship, coordinates)
-   end
+  
    def play_turns
     display_boards
-    player_shot
-    computer_shot unless game_over?
+    loop do
+      player_shot
+      display_boards
+      break if game_over?
+      computer_shot
+       display_boards
+      break if  game_over?
+    end
   end
   def display_boards
     puts "============= COMPUTER BOARD ============="
@@ -95,4 +107,4 @@ class Game
     end
   end
 end
-BattleshipGame.new.start_game
+Game.new.start_game

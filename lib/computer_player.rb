@@ -1,25 +1,26 @@
 require 'pry'
 class ComputerPlayer
-  attr_reader
+  attr_reader :computer_board, :computer_ships
   def initialize
+    @computer_board = Board.new
     @computer_ships = []
   end
-  def place_ships(board)
-    place_cruiser(board)
-    place_submarine(board)
+  def place_ships(@computer_board)
+    place_cruiser(computer_board)
+    place_submarine(@computer_board)
   end
-  def place_cruiser(board)
+  def place_cruiser(computer_board)
     cruiser = Ship.new("Cruiser", 3)
     valid_placement = false
     until valid_placement
       coordinates = generate_random_coordinates(cruiser.length)
       valid_placement = board.valid_placement?(cruiser, coordinates)
     end
-    omputer_board.place(cruiser, coordinates)
+    computer_board.place(cruiser, coordinates)
     computer_ships << cruiser
     @pcomputer_board.display
   end
-  def place_submarine(board)
+  def place_submarine(@computer_board)
     submarine = Ship.new("Submarine", 2)
     valid_placement = false
     until valid_placement

@@ -1,14 +1,14 @@
 require 'pry'
 require 'optparse'
 class Player
-  attr_reader :board
+  attr_reader :player_board, :player_ships
   def initialize
-    @board = Board.new
+    @player_board = Board.new
     @player_ships = []
   end
-  def place_ships(board)
-    place_cruiser(board)
-    place_submarine(board)
+  def place_ships
+    @player_board.place_cruiser
+    @player_board.place_submarine
   end
   def place_cruiser(board)
     cruiser = Ship.new("Cruiser", 3)
