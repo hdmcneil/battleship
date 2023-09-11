@@ -1,4 +1,7 @@
-class GameSetup
+require 'pry'
+require 'optparse'
+
+class Game
   attr_reader
 
   def initialize
