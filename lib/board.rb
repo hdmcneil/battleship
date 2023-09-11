@@ -70,7 +70,6 @@ attr_reader :cells
   def place(ship, coordinates)
     coordinates.each do |coordinate|
       cell = @cells[coordinate]
-      # require 'pry'; binding.pry
       cell.place_ship(ship)
     end
   end
@@ -104,9 +103,3 @@ attr_reader :cells
       board
     end
 end
-
-
-
-
-
-
