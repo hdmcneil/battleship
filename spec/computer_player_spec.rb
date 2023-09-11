@@ -1,11 +1,11 @@
 require './lib/ship'
 require './lib/cell'
 require './lib/board'
-require './lib/game_setup'
+require './lib/game'
 require './lib/computer_player'
 require 'pry'
 
-RSpec.describe Board do
+RSpec.describe ComputerPlayer do
   before :each do
     @computer = ComputerPlayer.new
     @board = Board.new
