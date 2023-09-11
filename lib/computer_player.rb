@@ -5,9 +5,9 @@ class ComputerPlayer
     @computer_board = Board.new
     @computer_ships = []
   end
-  def place_ships(@computer_board)
-    place_cruiser(computer_board)
-    place_submarine(@computer_board)
+  def place_ships
+    @computer_board.place_cruiser
+    @computer_board.place_submarine
   end
   def place_cruiser(computer_board)
     cruiser = Ship.new("Cruiser", 3)
