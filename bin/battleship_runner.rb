@@ -1,9 +1,9 @@
-require_relative 'board'     
-require_relative 'cell'
-require_relative 'ship'
-require_relative 'player'
-require_relative 'computer_player'
-require_relative 'game'
+require './lib/ship'
+require './lib/cell'
+require './lib/board'
+require './lib/game'
+require './lib/player'
+require './lib/computer'
 
 # Create a new game instance
 game = Game.new
