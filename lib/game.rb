@@ -3,12 +3,13 @@ require './lib/computer_player'
 require './lib/player'
 require 'optparse'
 class Game
-  attr_reader :quit, :game_over, :computer_player, :player
+  attr_reader :quit, :game_over, :computer_player, :player, :used_coordinates
    def initialize
     @computer_player = ComputerPlayer.new
     @player = Player.new
     @quit = false
     @game_over = false
+    @used_coordinates = []
    end
    def play_again?
     puts "Do you want to play again? (yes/no)"
@@ -78,21 +79,34 @@ class Game
       puts "Please enter a valid coordinate:"
       coordinate = gets.chomp.upcase
     end
-    result = computer_board.fire_upon.coordinate
+    cell = @computer_player.computer_board.cells[coordinate]
+    cell.fire_upon
+    result = cell.coordinate
     display_shot_result(coordinate, result, "Your")
   end
+  def generate_computer_shot
+    rows = ["A", "B", "C", "D"]
+    columns = ["1", "2", "3", "4"]
+    
+    available_coordinates = rows.product(columns).map { |row, col| "#{row}#{col}" } - used_coordinates
+    
+    return nil if available_coordinates.empty? 
+    
+    selected_coordinate = available_coordinates.sample
+    used_coordinates << selected_coordinate 
+    
+    selected_coordinate
+  end
+  
   def computer_shot
-    computer = ComputerPlayer.new
-    coordinate = computer.generate_computer_shot(@player.player_board)
-    result = @player.player_board.fire_upon.coordinate
+    coordinate = generate_computer_shot
+    result = @player.player_board.cells[coordinate].fire_upon
     display_shot_result(coordinate, result, "My")
   end
-  def cell_at
-    @player.player_board.cells
-  end
+ 
   def valid_shot?(coordinate)
-    cell = @play.player_board.cells
-    @player.player_board.valid_coordinate?(coordinate) && !@player.player_board.cell_at.fired_upon?
+    cell = @player.player_board.cells[coordinate]
+    @player.player_board.valid_coordinate?(coordinate) && !cell.fired_upon?
   end
   def display_shot_result(coordinate, result, player)
     case result
