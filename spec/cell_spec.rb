@@ -1,6 +1,4 @@
-require './lib/ship'
-require './lib/cell'
-require 'pry'
+require 'spec_helper'
 
 RSpec.describe Cell do
   before :each do

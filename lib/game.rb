@@ -1,24 +1,37 @@
 require 'pry'
+require './lib/computer_player'
+require './lib/player'
 require 'optparse'
 class Game
-  attr_reader :player_board, :computer_board, :player_ships, :computer_ships
+  attr_reader :quit, :game_over, :computer_player, :player
    def initialize
-    @player_board = Board.new
-    @computer_board = Board.new
+    @computer_player = ComputerPlayer.new
+    @player = Player.new
     @quit = false
     @game_over = false
    end
+   def play_again?
+    puts "Do you want to play again? (yes/no)"
+    response = gets.chomp.downcase
+    response == "yes"
+   end
+   def start_new_game
+    @computer_player.place_ships
+    puts @player.player_board.render
+    @player.place_ships
+    play_turns
+   end
+   def reset_game 
+      @player_board
+      @computer_board
+      @player 
+      @computer 
+      @game_over = false
+   end
    def start_game
     loop do
-      @board = Board.new
-      @player = Player.new
-      @computer = ComputerPlayer.new
-      @game_over = false
-      if game_over?
-        display_winner
-        break unless play_again?
-      end
-    end
+      reset_game 
+      
     puts "Welcome to BATTLESHIP!"
     puts "Enter 'p' to play. Enter 'q' to quit."
     while !@quit
@@ -33,27 +46,30 @@ class Game
       else
         puts "Invalid input. Please enter 'p' to play or 'q' to quit"
       end
+        if game_over?
+          display_winner
+          break unless play_again?
+        end
+      end
     end
   end
-  def play_again?
-    puts "Do you want to play again? (yes/no)"
-    response = gets.chomp.downcase
-    response == "yes"
-  end
-   def start_new_game
-    computer.place_ships(ship, coordinates)
-    player.place_ships(ship, coordinates)
-   end
+  
    def play_turns
     display_boards
-    player_shot
-    computer_shot unless game_over?
+    loop do
+      player_shot
+      display_boards
+      break if game_over?
+      computer_shot
+       display_boards
+      break if  game_over?
+    end
   end
   def display_boards
     puts "============= COMPUTER BOARD ============="
-    computer_board.display(reveal_ships: false)
+   puts @computer_player.computer_board.render(reveal = false)
     puts "============== PLAYER BOARD ==============="
-    player_board.display
+   puts @player.player_board.render(reveal = true)
   end
   def player_shot
     puts "Enter the coordinate for your shot:"
@@ -62,17 +78,21 @@ class Game
       puts "Please enter a valid coordinate:"
       coordinate = gets.chomp.upcase
     end
-    result = computer_board.fire_upon(coordinate)
+    result = computer_board.fire_upon.coordinate
     display_shot_result(coordinate, result, "Your")
   end
   def computer_shot
     computer = ComputerPlayer.new
-    coordinate = computer.generate_computer_shot(player_board)
-    result = player_board.fire_upon(coordinate)
+    coordinate = computer.generate_computer_shot(@player.player_board)
+    result = @player.player_board.fire_upon.coordinate
     display_shot_result(coordinate, result, "My")
   end
+  def cell_at
+    @player.player_board.cells
+  end
   def valid_shot?(coordinate)
-    player_board.valid_coordinate?(coordinate) && !player_board.cell_fired_upon?(coordinate)
+    cell = @play.player_board.cells
+    @player.player_board.valid_coordinate?(coordinate) && !@player.player_board.cell_at.fired_upon?
   end
   def display_shot_result(coordinate, result, player)
     case result
@@ -85,14 +105,14 @@ class Game
     end
   end
   def game_over?
-    player_ships.all?(&:sunk?) || computer_board.all_ships_sunk?
+    @player.player_ships.all?{ |ship| ship.sunk?} || @computer_player.computer_ships.all? { |ship| ship.sunk?}
   end
   def display_winner
-    if @player_ships.all?(&:sunk?)
+    if @player.player_ships.all? { |ship| ship.sunk?}
       puts "I won! Better luck next time."
     else
       puts "Congratulations! You won Battleship!"
     end
   end
 end
-BattleshipGame.new.start_game
+Game.new.start_game

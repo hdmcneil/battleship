@@ -1,4 +1,4 @@
-require './lib/ship'
+require 'spec_helper'
 
 RSpec.describe Ship do
   before :each do
