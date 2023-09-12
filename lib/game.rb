@@ -81,7 +81,7 @@ class Game
     end
     cell = @computer_player.computer_board.cells[coordinate]
     cell.fire_upon
-    result = cell.coordinate
+    result = cell.render
     display_shot_result(coordinate, result, "Your")
   end
   def generate_computer_shot
@@ -91,31 +91,37 @@ class Game
     available_coordinates = rows.product(columns).map { |row, col| "#{row}#{col}" } - used_coordinates
     
     return nil if available_coordinates.empty? 
-    
-    selected_coordinate = available_coordinates.sample
-    used_coordinates << selected_coordinate 
-    
+
+    selected_coordinate = nil
+    loop do
+      selected_coordinate = available_coordinates.sample
+      break unless used_coordinates.include?(selected_coordinate)
+    end
+
+    used_coordinates << selected_coordinate
     selected_coordinate
   end
   
   def computer_shot
     coordinate = generate_computer_shot
-    result = @player.player_board.cells[coordinate].fire_upon
+    cell = @player.player_board.cells[coordinate]
+    cell.fire_upon
+    result = cell.render
     display_shot_result(coordinate, result, "My")
   end
  
   def valid_shot?(coordinate)
-    cell = @player.player_board.cells[coordinate]
-    @player.player_board.valid_coordinate?(coordinate) && !cell.fired_upon?
+    cell = @computer_player.computer_board.cells[coordinate]
+    @computer_player.computer_board.valid_coordinate?(coordinate) && !cell.fired_upon?
   end
   def display_shot_result(coordinate, result, player)
     case result
     when :miss
-      puts "Player shot on #{coordinate} was a miss."
+      puts "#{player} shot on #{coordinate} was a miss."
     when :hit
-      puts "Player shot on #{coordinate} was a hit!"
+      puts "#{player} shot on #{coordinate} was a hit!"
     when :sunk
-      puts "Player shot on #{coordinate} sunk a ship!"
+      puts "#{player} shot on #{coordinate} sunk a ship!"
     end
   end
   def game_over?
