@@ -29,7 +29,7 @@ class ComputerPlayer
       coordinates = generate_random_coordinates(submarine.length)
       valid_placement = @computer_board.valid_placement?(submarine, coordinates)
     end
-    # binding.pry
+    
     @computer_board.place(submarine, coordinates)
     @computer_ships << submarine
     @computer_board.render
@@ -37,21 +37,53 @@ class ComputerPlayer
   def generate_random_coordinates(ship_length)
     rows = ["A", "B", "C", "D"]
     columns = ["1", "2", "3", "4"]
-    random_row = rows.sample
-    random_column = columns.sample
-    initial_coordinate = random_row + random_column
-    coordinates = [initial_coordinate]
-    (ship_length -1).times do
-      if rand(2) == 0
-        next_row = rows.index(random_row) + rand(ship_length)
-        next_row = [next_row, rows.length - 1].min
-        coordinates << rows[next_row] + random_column
-      else
-        next_column = columns.index(random_column) + rand(ship_length)
-        next_column = [next_column, columns.length - 1].min
-        coordinates << random_row + columns[next_column]
+  
+    # Randomly decide whether to place the ship vertically or horizontally
+    vertical_placement = rand(2) == 0
+  
+    if vertical_placement
+      # Randomly choose the row for the initial coordinate
+      initial_row = rows.sample
+  
+      # Ensure that the ship will fit vertically on the board
+      while rows.index(initial_row) + ship_length > rows.length
+        initial_row = rows.sample
+      end
+  
+      # Randomly choose the column for the initial coordinate
+      initial_column = columns.sample
+  
+      initial_coordinate = initial_row + initial_column
+      coordinates = [initial_coordinate]
+  
+      (ship_length - 1).times do |i|
+        next_row_index = rows.index(initial_row) + i + 1
+        next_row = rows[next_row_index]
+        coordinates << next_row + initial_column
+      end
+    else
+      # Randomly choose the row for the initial coordinate
+      initial_row = rows.sample
+  
+      # Randomly choose the column for the initial coordinate
+      initial_column = columns.sample
+  
+      # Ensure that the ship will fit horizontally on the board
+      while columns.index(initial_column) + ship_length > columns.length
+        initial_column = columns.sample
+      end
+  
+      initial_coordinate = initial_row + initial_column
+      coordinates = [initial_coordinate]
+  
+      (ship_length - 1).times do |i|
+        next_column_index = columns.index(initial_column) + i + 1
+        next_column = columns[next_column_index]
+        coordinates << initial_row + next_column
       end
     end
+  
     coordinates
   end
+  
 end
