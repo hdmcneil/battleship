@@ -1,5 +1,6 @@
 require 'pry'
 require 'optparse'
+
 class Player
   attr_reader :player_board, :player_ships
   def initialize
@@ -27,7 +28,6 @@ class Player
       end
     end
     @player_ships << cruiser
-    
   end
   def place_submarine
     submarine = Ship.new("Submarine", 2)
@@ -43,6 +43,5 @@ class Player
       end
     end
     @player_ships<< submarine
-    
   end
 end

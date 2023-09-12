@@ -1,9 +1,4 @@
-require './lib/ship'
-require './lib/cell'
-require './lib/board'
-require './lib/game'
-require './lib/computer_player'
-require 'pry'
+require 'spec_helper'
 
 RSpec.describe ComputerPlayer do
   before :each do
