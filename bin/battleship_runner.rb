@@ -3,7 +3,7 @@ require './lib/cell'
 require './lib/board'
 require './lib/game'
 require './lib/player'
-require './lib/computer'
+require './lib/computer_player'
 
 # Create a new game instance
 game = Game.new
