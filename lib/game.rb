@@ -11,25 +11,8 @@ class Game
     @game_over = false
     @used_coordinates = []
    end
-   def play_again?
-    puts "Do you want to play again? (yes/no)"
-    response = gets.chomp.downcase
-    response == "yes"
-   end
-   def start_new_game
-    @computer_player.place_ships
-    puts @player.player_board.render
-    @player.place_ships
-    play_turns
-   end
-   def reset_game 
-      @player_board
-      @computer_board
-      @player 
-      @computer 
-      @game_over = false
-   end
-   def start_game
+  
+  def start_game  
     loop do
       reset_game 
       
@@ -54,8 +37,25 @@ class Game
       end
     end
   end
-  
-   def play_turns
+  def start_new_game
+    @computer_player.place_ships
+    puts @player.player_board.render
+    @player.place_ships
+    play_turns
+  end
+  def reset_game 
+    @player_board
+    @computer_board
+    @player 
+    @computer 
+    @game_over = false
+  end
+  def play_again?
+    puts "Do you want to play again? (yes/no)"
+    response = gets.chomp.downcase
+    response == "yes"
+  end
+  def play_turns
     display_boards
     loop do
       player_shot
@@ -81,9 +81,7 @@ class Game
     cell = @computer_player.computer_board.cells[coordinate]
     cell.fire_upon
     display_player_shot(coordinate)
-
   end
-
   def computer_shot
     rows = ["A", "B", "C", "D"]
     columns = ["1", "2", "3", "4"]
@@ -97,9 +95,6 @@ class Game
 
     display_computer_shot(selected_coordinate)
   end
-  
-
- 
   def valid_shot?(coordinate)
     cell = @computer_player.computer_board.cells[coordinate]
     @computer_player.computer_board.valid_coordinate?(coordinate) && !cell.fired_upon?
