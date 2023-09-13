@@ -111,7 +111,7 @@ class Game
        elsif result.render == "M"
          puts "Player shot on #{result.coordinate} was a miss!"
       else result.render == "X"
-        puts "Player shot on #{coordinate} sunk my #{result.ship}!"
+        puts "Player shot on #{coordinate} sunk my #{result.ship.name}!"
     end
   end
   def display_computer_shot(coordinate)
@@ -121,7 +121,7 @@ class Game
        elsif result.render == "M"
          puts "Computer shot on #{result.coordinate} was a miss!"
       else result.render == "X"
-        puts "Computer shot on #{coordinate} sunk my #{result.ship.name}!"
+        puts "Computer shot on #{coordinate} sunk your #{result.ship.name}!"
     end
   end
   def game_over?
