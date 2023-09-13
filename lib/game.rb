@@ -36,7 +36,7 @@ class Game
     puts "Welcome to BATTLESHIP!"
     puts "Enter 'p' to play. Enter 'q' to quit."
     while !@quit
-      user_input = gets.chomp.downcase
+      user_input = gets&.chomp.downcase
       case user_input
       when 'p'
         puts "Starting a new game..."
