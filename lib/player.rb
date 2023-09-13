@@ -18,7 +18,7 @@ class Player
     puts "The Cruiser is three units long and the submarine is two units long"
     loop do
       puts "Enter the squares for the Cruiser (3 spaces):"
-      cruiser_placement = gets.chomp
+      cruiser_placement = gets.chomp.upcase
       coordinates = cruiser_placement.split
       if @player_board.valid_placement?(cruiser, coordinates)
         @player_board.place(cruiser, coordinates)
@@ -33,7 +33,7 @@ class Player
     submarine = Ship.new("Submarine", 2)
     loop do
       puts "Enter the squares for the Submarine (2 spaces):"
-      submarine_placement = gets.chomp
+      submarine_placement = gets.chomp.upcase
       coordinates = submarine_placement.split
       if @player_board.valid_placement?(submarine, coordinates)
         @player_board.place(submarine, coordinates)
