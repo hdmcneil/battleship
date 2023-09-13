@@ -34,23 +34,23 @@ class Game
       reset_game 
       
     puts "Welcome to BATTLESHIP!"
-    while !@quit
+   
     puts "Enter 'p' to play. Enter 'q' to quit."
-      user_input = gets&.chomp.downcase
-      case user_input
-      when 'p'
-        puts "Starting a new game..."
-        start_new_game
+    user_input = gets&.chomp.downcase
+    case user_input
+     when 'p'
+      puts "Starting a new game..."
+      start_new_game
       when 'q'
-        puts "Goodbye"
-        @quit = true
+       puts "Goodbye"
+       @quit = true
+       break
       else
-        puts "Invalid input. Please enter 'p' to play or 'q' to quit"
+       puts "Invalid input. Please enter 'p' to play or 'q' to quit"
       end
-        if game_over?
-          display_winner
-          break unless play_again?
-        end
+      if game_over?
+        display_winner
+        break unless play_again?
       end
     end
   end
