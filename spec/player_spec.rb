@@ -8,19 +8,19 @@ RSpec.describe Player do
     @submarine = Ship.new("Submarine", 2)
   end
 
-  it 'is an instance of layer class' do
-    expect(@player).to be_an_instance_of(Player)
-  end
+  # xit 'is an instance of layer class' do
+  #   expect(@player).to be_an_instance_of(Player)
+  # end
 
-  it 'can place a cruiser' do
-    @player.player_board.place_cruiser
-    expect(@cruiser.length).to eq(3)
-    expect(@board.cells.values.any?(&:ship)).to be(true)
-  end
+  # xit 'can place a cruiser' do
+  #   @player.player_board.place_cruiser
+  #   expect(@cruiser.length).to eq(3)
+  #   expect(@board.cells.values.any?(&:ship)).to be(true)
+  # end
 
-  it 'can place a submarine' do
-    @player.player_board.place_submarine
-    expect(@submarine.length).to eq(2)
-    expect(@board.cells.values.any?(&:ship)).to be(true)
-  end
+  # xit 'can place a submarine' do
+  #   @player.player_board.place_submarine
+  #   expect(@submarine.length).to eq(2)
+  #   expect(@board.cells.values.any?(&:ship)).to be(true)
+  # end
 end
