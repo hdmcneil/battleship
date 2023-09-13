@@ -34,8 +34,8 @@ class Game
       reset_game 
       
     puts "Welcome to BATTLESHIP!"
-    puts "Enter 'p' to play. Enter 'q' to quit."
     while !@quit
+    puts "Enter 'p' to play. Enter 'q' to quit."
       user_input = gets&.chomp.downcase
       case user_input
       when 'p'
@@ -59,9 +59,8 @@ class Game
     display_boards
     loop do
       player_shot
-      display_boards
       break if game_over?
-      computer_shot
+       computer_shot
        display_boards
       break if  game_over?
     end
@@ -81,47 +80,48 @@ class Game
     end
     cell = @computer_player.computer_board.cells[coordinate]
     cell.fire_upon
-    result = cell.render
-    display_shot_result(coordinate, result, "Your")
+    display_player_shot(coordinate)
+
   end
-  def generate_computer_shot
+
+  def computer_shot
     rows = ["A", "B", "C", "D"]
     columns = ["1", "2", "3", "4"]
     
-    available_coordinates = rows.product(columns).map { |row, col| "#{row}#{col}" } - used_coordinates
+    available_coordinates = rows.product(columns).map { |row, col| "#{row}#{col}" } - @used_coordinates
+
+    selected_coordinate = available_coordinates.sample
+    @used_coordinates << selected_coordinate
     
-    return nil if available_coordinates.empty? 
+    @player.player_board.cells[selected_coordinate].fire_upon
 
-    selected_coordinate = nil
-    loop do
-      selected_coordinate = available_coordinates.sample
-      break unless used_coordinates.include?(selected_coordinate)
-    end
-
-    used_coordinates << selected_coordinate
-    selected_coordinate
+    display_computer_shot(selected_coordinate)
   end
   
-  def computer_shot
-    coordinate = generate_computer_shot
-    cell = @player.player_board.cells[coordinate]
-    cell.fire_upon
-    result = cell.render
-    display_shot_result(coordinate, result, "My")
-  end
+
  
   def valid_shot?(coordinate)
     cell = @computer_player.computer_board.cells[coordinate]
     @computer_player.computer_board.valid_coordinate?(coordinate) && !cell.fired_upon?
   end
-  def display_shot_result(coordinate, result, player)
-    case result
-    when :miss
-      puts "#{player} shot on #{coordinate} was a miss."
-    when :hit
-      puts "#{player} shot on #{coordinate} was a hit!"
-    when :sunk
-      puts "#{player} shot on #{coordinate} sunk a ship!"
+  def display_player_shot(coordinate)
+   result = @computer_player.computer_board.cells[coordinate]
+    if result.render == "H"
+        puts "Player shot on #{result.coordinate} was a hit!"
+       elsif result.render == "M"
+         puts "Player shot on #{result.coordinate} was a miss!"
+      else result.render == "X"
+        puts "Player shot on #{coordinate} sunk my #{result.ship}!"
+    end
+  end
+  def display_computer_shot(coordinate)
+   result = @player.player_board.cells[coordinate]
+    if result.render == "H"
+        puts "Computer shot on #{result.coordinate} was a hit!"
+       elsif result.render == "M"
+         puts "Computer shot on #{result.coordinate} was a miss!"
+      else result.render == "X"
+        puts "Computer shot on #{coordinate} sunk my #{result.ship.name}!"
     end
   end
   def game_over?
@@ -135,4 +135,3 @@ class Game
     end
   end
 end
-Game.new.start_game

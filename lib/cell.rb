@@ -18,11 +18,10 @@ attr_reader :coordinate,
   end
   
   def fire_upon
-    if @ship
+    if !@ship.nil?
       @ship.hit 
       @fired = true
     else
-      @ship = nil
       @fired = true
     end
   end
